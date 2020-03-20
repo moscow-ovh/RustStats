@@ -1,7 +1,7 @@
 # Rust Stats
 Обязательный плагин для работы статистики в магазине от [Moscow.OVH](https://moscow.ovh "Moscow.OVH")
 ## Зависимости
-- [RustStore](https://github.com/moscow-ovh/RustStore "RustStore")
+- [Rust Store](https://github.com/moscow-ovh/RustStore "Rust Store")
 ## Чат команды
 - `/top` - показать топ игроков.
 ## Консольные команды

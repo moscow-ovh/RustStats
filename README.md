@@ -1,5 +1,5 @@
 # Rust Stats
-Обязательный плагин для работы статистики в магазине от [Moscow.OVH](https://moscow.ovh "Moscow.OVH")
+Официальный плагин статистики от [Moscow.OVH](https://moscow.ovh "Moscow.OVH")
 ## Зависимости
 - [Rust Store](https://github.com/moscow-ovh/RustStore "Rust Store")
 ## Чат команды

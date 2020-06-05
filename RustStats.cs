@@ -14,7 +14,7 @@ using System.Collections;
 
 namespace Oxide.Plugins
 {
-    [Info("Rust Stats", "Sanlerus", "1.0.0")]
+    [Info("Rust Stats", "Sanlerus", "1.0.1")]
     [Description("Rust stats")]
     public class RustStats : RustPlugin
     {
@@ -243,7 +243,7 @@ namespace Oxide.Plugins
         [HookMethod("Init")]
         void Init()
         {
-            Unsubscribe(nameof(OnPlayerInit));
+            Unsubscribe(nameof(OnPlayerConnected));
             Unsubscribe(nameof(OnPlayerDisconnected));
             Unsubscribe(nameof(OnEntityDeath));
             Unsubscribe(nameof(OnDispenserGather));
@@ -387,8 +387,8 @@ namespace Oxide.Plugins
             _wipe = true;
         }
 
-        [HookMethod("OnPlayerInit")]
-        void OnPlayerInit(BasePlayer player)
+        [HookMethod("OnPlayerConnected")]
+        void OnPlayerConnected(BasePlayer player)
         {
             var playerId = player.userID;
             _joinStamp[playerId] = LibTime.GetUnixTimestamp();
@@ -399,7 +399,7 @@ namespace Oxide.Plugins
         void OnPlayerDisconnected(BasePlayer player)
         {
             var playerId = player.userID;
-            if (!_stats.ContainsKey(playerId)) return;
+            if (!_stats.ContainsKey(playerId) || !_joinStamp.ContainsKey(playerId)) return;
             _stats[playerId].PlayTime += LibTime.GetUnixTimestamp() - _joinStamp[playerId];
             _joinStamp.Remove(playerId);
         }
@@ -750,14 +750,14 @@ namespace Oxide.Plugins
                         }
                     }
 
-                    Subscribe(nameof(OnPlayerInit));
+                    Subscribe(nameof(OnPlayerConnected));
                     Subscribe(nameof(OnPlayerDisconnected));
                     Subscribe(nameof(OnEntityDeath));
                     Subscribe(nameof(OnDispenserGather));
                     Subscribe(nameof(OnCollectiblePickup));
                     Subscribe(nameof(OnServerSave));
                     RegisterCommands();
-                    foreach (var p in BasePlayer.activePlayerList) OnPlayerInit(p);
+                    foreach (var p in BasePlayer.activePlayerList) OnPlayerConnected(p);
                     if (!_wipe) return;
                     if (_setting.AutoResetStats) WipeStats();
                     if (_setting.AutoResetPlaytime) WipePlaytime();
